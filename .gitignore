@@ -146,7 +146,7 @@ env.bak/
 venv.bak/
 
 # PyCharm
-.idea
+.idea/
 
 # Posgres
 pgdata
