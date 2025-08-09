@@ -3,14 +3,14 @@ services:
     image: postgres:latest
     container_name: postgres_container
     environment:
-      POSTGRES_USER: jellyfish
-      POSTGRES_PASSWORD: iBy''oA,rjhMM\iKd>J{3{#>)qh'7/m/
-      POSTGRES_DB: sentiment_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: my_super_password
+      POSTGRES_DB: postgres
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5430:5432"
+      - "5433:5432"
     volumes:
-      - ./pgdata:/var/lib/postgresql/data/pgdata
+      - pgdata:/var/lib/postgresql/data/pgdata
     deploy:
       resources:
         limits:
