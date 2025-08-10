@@ -13,6 +13,7 @@ class History(Base):
 
     user: Mapped['User'] =  relationship('User', back_populates='history')
 
+
     def __str__(self):
         return f'{self.content :20}, {self.avg_sentiment}'
 
