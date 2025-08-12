@@ -6,21 +6,16 @@ from app.users.schemas import UserRB, UserPublic
 router = APIRouter(prefix='/u', tags=['works with users'])
 
 
-@router.get('/profiles', summary='get user profiles')
-async def get_profile(user: UserRB = Depends()) -> list[UserPublic] | dict:
-    users = await UserService.get(**user.to_dict())
+@router.get('/profiles', summary='Gets users')
+async def get_profile(user: UserRB = Depends()):
+    users = await UserService.get_all(**user.to_dict())
 
-    if users:
-        return users
-    
-    return {'detail': 'No users were found'}
+    return users
 
 
-@router.get('/profile', summary='get user profile')
-async def get_profile(user_id: int) -> UserPublic | dict:
-    user = await UserService.get_one_or_none_by_id(id=user_id)
+@router.get('/profile', summary='Gets user profile')
+async def get_profile(user_id: int):
+    user = await UserService.get_user(user_id)
 
-    if user:
-        return user
-
-    return {'detail': 'Profile not found'}
+    return user
+  

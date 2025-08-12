@@ -6,16 +6,19 @@ from app.database import async_session_maker
 class BaseService:
     model = None
 
+
     @classmethod
-    async def get(cls, **filter_by):
+    async def get_all(cls, **filter_by):
         async with async_session_maker() as session:
             query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
             instances = result.scalars().all()
 
-        return instances
+        if instances:
+            return instances
 
-    
+        return {'detail': 'Not found'}
+
     @classmethod
     async def get_one_or_none_by_id(cls, id: int):
         async with async_session_maker() as session:
@@ -23,4 +26,7 @@ class BaseService:
             result = await session.execute(query)
             instance = result.scalar_one_or_none()
         
-        return instance
+        if instance:
+            return instance
+        
+        return {'detail': 'Not found'}

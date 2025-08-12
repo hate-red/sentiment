@@ -24,12 +24,12 @@ str_null_true = Annotated[str, mapped_column(nullable=True)]
 class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
 
-    @declared_attr.directive
-    def __tablename__(cls) -> str:
-        if cls.__name__.endswith('y'):
-            return f'{cls.__name__.lower()}'
+    # @declared_attr.directive
+    # def __tablename__(cls) -> str:
+    #     if cls.__name__.endswith('y'):
+    #         return f'{cls.__name__.lower()}'
         
-        return f'{cls.__name__.lower()}s'
+    #     return f'{cls.__name__.lower()}s'
 
 
     created_at: Mapped[created_at]
