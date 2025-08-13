@@ -22,3 +22,17 @@ class UserService(BaseService):
             return user
         
         return {'detail': 'User not found'}
+    
+
+    @classmethod
+    async def get_users(cls, **filter_by):
+        async with async_session_maker() as session:
+            query = select(cls.model).options(joinedload(cls.model.history)) \
+                                     .filter_by(**filter_by)
+            result = await session.execute(query)
+            users = result.unique().scalars().all()
+        
+        if users:
+            return users
+        
+        return {'detail': 'User not found'}

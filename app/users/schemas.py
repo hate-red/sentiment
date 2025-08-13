@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict, Field, EmailStr
-
+from app.history.schemas import HistoryPublic
 
 class UserPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -8,7 +8,7 @@ class UserPublic(BaseModel):
     username: str = Field(..., min_length=4, max_length=20)
     email: EmailStr
     role: str = Field(..., description="Characterizes one's privileges")
-    history: list['HistoryPublic'] = Field(default=None, description='history')
+    history: list["HistoryPublic"] = Field(default=None, description='history')
 
 
 class UserRB(BaseModel):
@@ -28,3 +28,9 @@ class UserRB(BaseModel):
         filtered_data = {key: value for key, value in data.items() if value is not None}
 
         return filtered_data
+
+
+class UserAdd(BaseModel):
+    username: str
+    email: EmailStr
+    role: str | None = 'default'

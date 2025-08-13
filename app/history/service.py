@@ -15,9 +15,9 @@ class HistoryService(BaseService):
             query = select(cls.model).options(joinedload(cls.model.user)) \
                                    .filter_by(user_id=user_id)
             result = await session.execute(query)
-            records = result.scalars().all()
+            history = result.scalars().all()
         
-        if records:
-            return records
+        if history:
+            return history
 
         return {'detail': 'History not found'}

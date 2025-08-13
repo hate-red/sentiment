@@ -7,6 +7,7 @@ class HistoryPublic(BaseModel):
     id: int
     content: str
     avg_sentiment: float
+    user_id: int
 
 
 class HistoryRB(BaseModel):
@@ -26,3 +27,8 @@ class HistoryRB(BaseModel):
         filtered_data = {key: value for key, value in data.items() if value is not None}
 
         return filtered_data
+
+class HistoryAdd(BaseModel):
+    user_id: int
+    content: str
+    avg_sentiment: float
