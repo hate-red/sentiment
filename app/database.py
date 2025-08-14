@@ -19,7 +19,7 @@ str_uniq = Annotated[str, mapped_column(unique=True, nullable=False)]
 
 # additional columns for each table in database
 created_at = Annotated[datetime, mapped_column(server_default=func.now())]
-updated_at = Annotated[datetime, mapped_column(server_default=func.now(), onupdate=func.now)]
+updated_at = Annotated[datetime, mapped_column(server_default=func.now(), onupdate=func.now())]
 
 
 class Base(AsyncAttrs, DeclarativeBase):
