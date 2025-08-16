@@ -22,16 +22,16 @@ class BaseService:
 
 
     @classmethod
-    async def get_one_or_none_by_id(cls, id: int):
+    async def get_one_or_none(cls, **filter_by):
         async with async_session_maker() as session:
-            query = select(cls.model).filter_by(id=id)
+            query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
             instance = result.scalar_one_or_none()
         
         if instance:
             return instance
         
-        return {'detail': 'Not found'}
+        return None
 
 
     @classmethod

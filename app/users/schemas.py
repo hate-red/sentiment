@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, Field, EmailStr
+from pydantic import BaseModel, ConfigDict, Field, EmailStr, SecretStr
 from app.history.schemas import HistoryPublic
 
 class UserPublic(BaseModel):
@@ -9,8 +9,12 @@ class UserPublic(BaseModel):
     id: int
     username: str
     email: EmailStr
-    role: str
-    history: list["HistoryPublic"]
+    history: list['HistoryPublic']
+
+    is_user: bool
+    is_premium: bool
+    is_admin: bool
+    is_super_admin: bool
 
 
 class UserFilter(BaseModel):
@@ -20,27 +24,43 @@ class UserFilter(BaseModel):
 
     username: str | None = None
     email: EmailStr | None = None
-    role: str | None = 'default'
+
+    is_user: bool | None = True
+    is_premium: bool | None = False
+    is_admin: bool | None = False
+    is_super_admin: bool | None = False
 
 
     def to_dict(self):
         data = {
             'username': self.username, 
             'email': self.email, 
-            'role': self.role, 
+            'is_user': self.is_user,
+            'is_premium': self.is_premium,
+            'is_admin': self.is_admin,
+            'is_super_admin': self.is_super_admin
         }
         filtered_data = {key: value for key, value in data.items() if value is not None}
 
         return filtered_data
 
 
-
-class UserCreate(BaseModel):
+class UserSignUp(BaseModel):
     """Use to create new user"""
 
     username: str
     email: EmailStr
-    role: str | None = 'default'
+    password: SecretStr
+
+    is_user: bool | None = True
+    is_premium: bool | None = False
+    is_admin: bool | None = False
+    is_super_admin: bool | None = False
+
+
+class UserSignIn(BaseModel):
+    email: EmailStr
+    password: SecretStr = Field(..., min_length=8, max_length=50)
 
 
 class UserUpdate(BaseModel):
@@ -48,7 +68,11 @@ class UserUpdate(BaseModel):
 
     username: str
     email: EmailStr
-    role: str | None = 'default'
+
+    is_user: bool | None = True
+    is_premium: bool | None = False
+    is_admin: bool | None = False
+    is_super_admin: bool | None = False
 
 
 class UserDelete(BaseModel):
@@ -57,7 +81,11 @@ class UserDelete(BaseModel):
     id: int | None = None
     username: str | None = None
     email: EmailStr | None = None
-    role: str | None = 'default'
+
+    is_user: bool | None = True
+    is_premium: bool | None = False
+    is_admin: bool | None = False
+    is_super_admin: bool | None = False
 
 
     def to_dict(self):
@@ -65,7 +93,10 @@ class UserDelete(BaseModel):
             'id': self.id,
             'username': self.username,
             'email': self.email,
-            'role': self.role,
+            'is_user': self.is_user,
+            'is_premium': self.is_premium,
+            'is_admin': self.is_admin,
+            'is_super_admin': self.is_super_admin
         }
         filtered_data = {key: value for key, value in data.items() if value is not None}
 

@@ -1,5 +1,6 @@
-from sqlalchemy import select, insert, update, delete
+from sqlalchemy import select
 from sqlalchemy.orm import joinedload
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.database import async_session_maker
 from app.service.base import BaseService
@@ -13,15 +14,15 @@ class UserService(BaseService):
     @classmethod
     async def get_user(cls, user_id: int):
         async with async_session_maker() as session:
-            query = select(cls.model).options(joinedload(cls.model.history)) \
-                                     .filter_by(id=user_id)
+            query = (
+                select(cls.model)
+                .options(joinedload(cls.model.history))
+                .filter_by(id=user_id)
+            )
             result = await session.execute(query)
             user = result.unique().scalar_one_or_none()
-        
-        if user:
-            return user
-        
-        return {'detail': 'User not found'}
+
+        return user
     
 
     @classmethod
@@ -31,8 +32,5 @@ class UserService(BaseService):
                                      .filter_by(**filter_by)
             result = await session.execute(query)
             users = result.unique().scalars().all()
-        
-        if users:
-            return users
-        
-        return {'detail': 'User not found'}
+
+        return users

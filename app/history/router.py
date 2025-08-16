@@ -37,7 +37,7 @@ async def update_history(history_id: int, history_info: HistoryUpdate = Depends(
     check = await HistoryService.update(filter_by={'id': history_id}, **history_info.model_dump())
 
     if check:
-        history = await HistoryService.get_one_or_none_by_id(id=history_id)
+        history = await HistoryService.get_one_or_none(id=history_id)
         return history
 
     return {'detail': 'Error when updating history'}

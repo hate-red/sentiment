@@ -1,8 +1,8 @@
-"""Initial migration
+"""modified users table
 
-Revision ID: fab8e01b7298
+Revision ID: 9eeb8a29a9cc
 Revises: 
-Create Date: 2025-08-13 10:49:34.558420
+Create Date: 2025-08-16 12:16:46.999721
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'fab8e01b7298'
+revision: str = '9eeb8a29a9cc'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,7 +25,11 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
-    sa.Column('role', sa.String(), nullable=False),
+    sa.Column('password', sa.String(), nullable=False),
+    sa.Column('is_user', sa.Boolean(), server_default=sa.text('true'), nullable=False),
+    sa.Column('is_premium', sa.Boolean(), server_default=sa.text('false'), nullable=False),
+    sa.Column('is_admin', sa.Boolean(), server_default=sa.text('false'), nullable=False),
+    sa.Column('is_super_admin', sa.Boolean(), server_default=sa.text('false'), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.PrimaryKeyConstraint('id'),
